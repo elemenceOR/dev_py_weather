@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  weather-app:
+    image: ${DOCKER_REGISTRY}/weather-app:${BUILD_NUMBER}
+    ports:
+      - "8000:8000"
+    environment:
+      - FLASK_ENV=production
+      - WEATHER_API_KEY=${WEATHER_API_KEY}
+    restart: always
