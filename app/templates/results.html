@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <!-- Search Form (Reusable Component) -->
+            <form method="POST" action="{{ url_for('main.index') }}" class="mb-4">
+                <div class="input-group mb-3">
+                    <input type="text" name="city" class="form-control" 
+                            placeholder="Search another city" 
+                            value="{{ request.form.get('city', '') }}" 
+                            required>
+                    <button class="btn btn-primary" type="submit">
+                        <i class="fas fa-search"></i> Get Weather
+                    </button>
+                </div>
+            </form>
+
+            <!-- Detailed Weather Results Card -->
+            {% if weather and weather.success %}
+            <div class="card weather-results-card">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="mb-0">
+                        <i class="fas fa-map-marker-alt"></i> 
+                        {{ weather.city }}, {{ weather.country }}
+                    </h2>
+                </div>
+                
+                <div class="card-body">
+                    <div class="row">
+                        <!-- Main Weather Information -->
+                        <div class="col-md-6">
+                            <div class="temperature-section">
+                                <h3 class="display-3 text-primary">
+                                    {{ weather.temp }}°C
+                                </h3>
+                                <p class="text-muted">
+                                    Feels like {{ weather.feels_like }}°C
+                                </p>
+                            </div>
+
+                            <div class="weather-description">
+                                <img src="http://openweathermap.org/img/wn/{{ weather.icon }}@2x.png" 
+                                        alt="{{ weather.description }}" 
+                                        class="weather-icon">
+                                <p class="lead text-capitalize">
+                                    {{ weather.description }}
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Detailed Weather Metrics -->
+                        <div class="col-md-6">
+                            <div class="weather-details">
+                                <h4>Weather Details</h4>
+                                <ul class="list-group">
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <span><i class="fas fa-tint"></i> Humidity</span>
+                                        <span class="badge bg-primary">{{ weather.humidity }}%</span>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <span><i class="fas fa-wind"></i> Wind Speed</span>
+                                        <span class="badge bg-info">{{ weather.wind_speed }} m/s</span>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <!-- Additional Weather Context -->
+                            <div class="additional-info mt-3">
+                                <div class="card bg-light">
+                                    <div class="card-body">
+                                        <p class="card-text small text-muted">
+                                            Weather data provided by OpenWeatherMap
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Optional: Historical or Forecast Link -->
+                <div class="card-footer text-muted">
+                    <div class="row">
+                        <div class="col">
+                            <a href="#" class="btn btn-outline-secondary btn-sm">
+                                <i class="fas fa-chart-line"></i> 5-Day Forecast
+                            </a>
+                        </div>
+                        <div class="col text-end">
+                            <small>Last updated: {{ current_time }}</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% elif weather and not weather.success %}
+            <!-- Error Handling Section -->
+            <div class="alert alert-danger" role="alert">
+                <i class="fas fa-exclamation-triangle"></i> 
+                {{ weather.message or "Unable to retrieve weather information" }}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Additional CSS for Enhanced Styling -->
+<style>
+    .weather-results-card {
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    .weather-icon {
+        width: 100px;
+        height: 100px;
+        margin-right: 10px;
+    }
+
+    .temperature-section {
+        margin-bottom: 20px;
+    }
+
+    .list-group-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+</style>
+
+<!-- Recommended: Add Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+{% endblock %}

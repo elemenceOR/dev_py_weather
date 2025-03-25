@@ -1,0 +1,46 @@
+Weather App{% block title %}{% endblock %}
+    
+    
+        body {
+            background-color: #f5f5f5;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        .weather-card {
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-top: 2rem;
+            background-color: white;
+            padding: 2rem;
+        }
+        
+        .weather-icon {
+            width: 100px;
+            height: 100px;
+        }
+        
+        .main-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+    
+
+
+    
+        
+            Weather App
+        
+        
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    
+                        {{ message }}
+                        
+                    
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        {% block content %}{% endblock %}
