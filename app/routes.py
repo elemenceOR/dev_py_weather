@@ -2,8 +2,11 @@ from flask import Blueprint, render_template, request, flash, redirect, url_for,
 from app.weather import Weather
 from datetime import datetime
 
+
+#blueprint for routing
 main_blueprint = Blueprint('main', __name__)
-weather = Weather
+
+weather = Weather()
 
 @main_blueprint.route('/health', methods=['GET'])
 def health_ck():
@@ -15,11 +18,13 @@ def index():
     current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     
     if request.method == 'POST':
+        #city search
         city = request.form.get('city')
         if not city:
             flash('Please enter a city name')
             return redirect(url_for('main.index'))
         
+        #fetch and parse raw data 
         raw_data = weather.get_weather(city)
         wdata = weather.parse_weather_data(raw_data)
         
@@ -30,8 +35,9 @@ def index():
                             weather=wdata, 
                             current_time=current_time)
 
-@main_blueprint.route('/api/weather', methods=['GET'])
+@main_blueprint.route('/api/weather/<city>', methods=['GET'])
 def get_weather_api(city):
+    #api endpoint for the city search
     raw_data = weather.get_weather(city)
     wdata = weather.parse_data(raw_data)
 

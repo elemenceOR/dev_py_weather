@@ -7,11 +7,12 @@ class Weather:
         self.base_url = "https://api.openweathermap.org/data/2.5/weather"
 
     def get_weather(self, city):
+        # fetch waether from the specified {city}
         try:
             params = {
                 'q': city,
                 'appid': self.api_key,
-                'units': 'metric'
+                'units': 'metric' #force to use celcius
             }
 
             response = requests.get(self.base_url, params=params)
@@ -35,6 +36,7 @@ class Weather:
             }
         
     def parse_data(self, wdata):
+        #transfrom raw data recived from the API into readable format
         if not wdata.get('success', False):
             return data
         
