@@ -1,32 +1,18 @@
-{% extends "base.html" %}
-
-{% block content %}
-
-    
-        
-            
-                
-                Get Weather
-            
-        
-        
-        {% if weather and weather.success %}
-        
-            
-                
-                    {{ weather.city }}, {{ weather.country }}
-                    {{ weather.temp }}°C
-                    Feels like: {{ weather.feels_like }}°C
-                    {{ weather.description }}
-                    Humidity: {{ weather.humidity }}%
-                    Wind: {{ weather.wind_speed }} m/s
-                
-                
-                    
-                
-            
-        
-        {% endif %}
-    
-
-{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Weather App</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+        <div class="main-container">
+                <h1>Weather App</h1>
+                <form method="POST" action="{{ url_for('main.index') }}">
+                        <input type="text" name="city" placeholder="Enter city name">
+                        <button type="submit">Get Weather</button>
+                </form>
+        </div>
+</body>
+</html>

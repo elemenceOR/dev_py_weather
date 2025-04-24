@@ -3,7 +3,7 @@ from flask import current_app
 
 class Weather:
     def __init__(self, api_key='None'):
-        self.api_key = api_key or current_app.config['WEATHER_API_KEY']
+        self.api_key = api_key
         self.base_url = "https://api.openweathermap.org/data/2.5/weather"
 
     def get_weather(self, city):
@@ -14,6 +14,8 @@ class Weather:
                 'appid': self.api_key,
                 'units': 'metric' #force to use celcius
             }
+
+            print(f"Using API key: {self.api_key}")
 
             response = requests.get(self.base_url, params=params)
 
@@ -38,7 +40,7 @@ class Weather:
     def parse_data(self, wdata):
         #transfrom raw data recived from the API into readable format
         if not wdata.get('success', False):
-            return data
+            return wdata
         
         data = wdata['data']
 

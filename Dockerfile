@@ -1,13 +1,15 @@
-FROM python:3.9-slim as builder
+FROM python:3.9 AS builder
 
 WORKDIR /app
 
 # Install dependencies
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt -t /dependencies
+COPY requirments.txt .
+RUN pip install --no-cache-dir -r requirments.txt -t /dependencies
+
+RUN pip install gunicorn -t /dependencies
 
 # Second stage: Create final runtime container
-FROM python:3.9-slim
+FROM python:3.9
 
 WORKDIR /app
 
@@ -31,4 +33,4 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 EXPOSE 8080
 
 # Start the application
-CMD ["gunicorn", "--bind", "0.0.0.0:8080", "wsgi:app"]
+CMD ["python", "-m", "gunicorn", "--bind", "0.0.0.0:8000", "wsgi:app"]
